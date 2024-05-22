@@ -144,6 +144,15 @@ size_t inline generate<Algorithm::KAWPOW>(Threads<CudaThreads> &threads, const s
 #endif
 
 
+#ifdef XMRIG_ALGO_MEOWPOW
+template<>
+size_t inline generate<Algorithm::MEOWPOW>(Threads<CudaThreads> &threads, const std::vector<CudaDevice> &devices)
+{
+    return generate(Algorithm::kMEOWPOW, threads, Algorithm::MEOWPOW_MEWC, devices);
+}
+#endif
+
+
 } /* namespace xmrig */
 
 

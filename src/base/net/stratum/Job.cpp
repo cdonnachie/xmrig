@@ -70,7 +70,6 @@ bool xmrig::Job::setBlob(const char *blob)
     }
 
     size /= 2;
-
     const size_t minSize = nonceOffset() + nonceSize();
     if (size < minSize || size >= sizeof(m_blob)) {
         return false;
@@ -175,6 +174,7 @@ int32_t xmrig::Job::nonceOffset() const
 {
    auto f = algorithm().family();
    if (f == Algorithm::KAWPOW)     return 32;
+   if (f == Algorithm::MEOWPOW)    return 32;
    if (f == Algorithm::GHOSTRIDER) return 76;
    return 39;
 }

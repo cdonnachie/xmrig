@@ -138,6 +138,15 @@ size_t inline generate<Algorithm::KAWPOW>(Threads<OclThreads>& threads, const st
 #endif
 
 
+#ifdef XMRIG_ALGO_MEOWPOW
+template<>
+size_t inline generate<Algorithm::MEOWPOW>(Threads<OclThreads>& threads, const std::vector<OclDevice>& devices)
+{
+    return generate(Algorithm::kMEOWPOW, threads, Algorithm::MEOWPOW_MEWC, devices);
+}
+#endif
+
+
 static inline std::vector<OclDevice> filterDevices(const std::vector<OclDevice> &devices, const std::vector<uint32_t> &hints)
 {
     std::vector<OclDevice> out;

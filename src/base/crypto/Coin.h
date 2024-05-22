@@ -38,6 +38,7 @@ public:
         GRAFT,
         KEVA,
         RAVEN,
+        MEWC,
         WOWNERO,
         ZEPHYR,
         TOWNFORGE,

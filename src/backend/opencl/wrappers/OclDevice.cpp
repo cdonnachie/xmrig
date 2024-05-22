@@ -51,6 +51,10 @@ extern bool ocl_generic_rx_generator(const OclDevice &device, const Algorithm &a
 extern bool ocl_generic_kawpow_generator(const OclDevice& device, const Algorithm& algorithm, OclThreads& threads);
 #endif
 
+#ifdef XMRIG_ALGO_MEOWPOW
+extern bool ocl_generic_meowpow_generator(const OclDevice& device, const Algorithm& algorithm, OclThreads& threads);
+#endif
+
 extern bool ocl_vega_cn_generator(const OclDevice &device, const Algorithm &algorithm, OclThreads &threads);
 extern bool ocl_generic_cn_generator(const OclDevice &device, const Algorithm &algorithm, OclThreads &threads);
 
@@ -61,6 +65,9 @@ static ocl_gen_config_fun generators[] = {
 #   endif
 #   ifdef XMRIG_ALGO_KAWPOW
     ocl_generic_kawpow_generator,
+#   endif
+#   ifdef XMRIG_ALGO_MEOWPOW
+    ocl_generic_meowpow_generator,
 #   endif
     ocl_vega_cn_generator,
     ocl_generic_cn_generator

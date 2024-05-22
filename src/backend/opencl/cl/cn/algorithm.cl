@@ -28,6 +28,7 @@
 #define ALGO_AR2_CHUKWA_V2  0x61140000
 #define ALGO_AR2_WRKZ       0x61120000
 #define ALGO_KAWPOW_RVN     0x6b0f0000
+#define ALGO_MEOWPOW_MEWC   0x6d0f0000
 
 #define FAMILY_UNKNOWN      0
 #define FAMILY_CN           0x63150000
@@ -38,3 +39,4 @@
 #define FAMILY_RANDOM_X     0x72000000
 #define FAMILY_ARGON2       0x61000000
 #define FAMILY_KAWPOW       0x6b000000
+#define FAMILY_MEOWPOW      0x6d000000

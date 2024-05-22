@@ -127,6 +127,22 @@ if (WITH_OPENCL)
              )
     endif()
 
+    if (WITH_MEOWPOW)
+        list(APPEND HEADERS_BACKEND_OPENCL
+             src/backend/opencl/kernels/meowpow/MeowPow_CalculateDAGKernel.h
+             src/backend/opencl/runners/OclMeowPowRunner.h
+             src/backend/opencl/runners/tools/OclMeowPow.h
+             )
+
+        list(APPEND SOURCES_BACKEND_OPENCL
+             src/backend/opencl/generators/ocl_generic_meowpow_generator.cpp
+             src/backend/opencl/kernels/meowpow/MeowPow_CalculateDAGKernel.cpp
+             src/backend/opencl/runners/OclMeowPowRunner.cpp
+             src/backend/opencl/runners/tools/OclMeowPow.cpp
+             )
+    endif()
+
+
     if (WITH_STRICT_CACHE)
         add_definitions(/DXMRIG_STRICT_OPENCL_CACHE)
     else()

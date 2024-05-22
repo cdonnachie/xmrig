@@ -5,6 +5,7 @@
  * Copyright 2014-2016 Wolf9466    <https://github.com/OhGodAPet>
  * Copyright 2016      Jay D Dee   <jayddee246@gmail.com>
  * Copyright 2017-2018 XMR-Stak    <https://github.com/fireice-uk>, <https://github.com/psychocrypt>
+ * Copyright 2018      Lee Clagett <https://github.com/vtnerd>
  * Copyright 2018-2020 SChernykh   <https://github.com/SChernykh>
  * Copyright 2016-2020 XMRig       <https://github.com/xmrig>, <support@xmrig.com>
  *
@@ -23,46 +24,42 @@
  */
 
 
-#include "backend/opencl/cl/OclSource.h"
-#include "backend/opencl/cl/cn/cryptonight_cl.h"
+#include "backend/opencl/OclThreads.h"
+#include "backend/opencl/wrappers/OclDevice.h"
 #include "base/crypto/Algorithm.h"
+#include "crypto/randomx/randomx.h"
+#include "crypto/rx/RxAlgo.h"
 
 
-#ifdef XMRIG_ALGO_RANDOMX
-#   include "backend/opencl/cl/rx/randomx_cl.h"
-#endif
-
-#ifdef XMRIG_ALGO_KAWPOW
-#   include "backend/opencl/cl/kawpow/kawpow_cl.h"
-#   include "backend/opencl/cl/kawpow/kawpow_dag_cl.h"
-#endif
+namespace xmrig {
 
 
-#ifdef XMRIG_ALGO_MEOWPOW
-#   include "backend/opencl/cl/meowpow/meowpow_cl.h"
-#   include "backend/opencl/cl/meowpow/meowpow_dag_cl.h"
-#endif
-
-
-const char *xmrig::OclSource::get(const Algorithm &algorithm)
+bool ocl_generic_meowpow_generator(const OclDevice &device, const Algorithm &algorithm, OclThreads &threads)
 {
-#   ifdef XMRIG_ALGO_RANDOMX
-    if (algorithm.family() == Algorithm::RANDOM_X) {
-        return randomx_cl;
+    if (algorithm.family() != Algorithm::MEOWPOW) {
+        return false;
     }
-#   endif
 
-#   ifdef XMRIG_ALGO_KAWPOW
-    if (algorithm.family() == Algorithm::KAWPOW) {
-        return kawpow_dag_cl;
+    bool isNavi = false;
+
+    switch (device.type()) {
+    case OclDevice::Navi_10:
+    case OclDevice::Navi_12:
+    case OclDevice::Navi_14:
+    case OclDevice::Navi_21:
+        isNavi = true;
+        break;
+
+    default:
+        break;
     }
-#   endif
 
-#   ifdef XMRIG_ALGO_MEOWPOW
-    if (algorithm.family() == Algorithm::MEOWPOW) {
-        return meowpow_dag_cl;
-    }
-#   endif
+    const uint32_t cu_intensity = isNavi ? 524288 : 262144;
+    const uint32_t worksize = isNavi ? 128 : 256;
+    threads.add(OclThread(device.index(), device.computeUnits() * cu_intensity, worksize, 1));
 
-    return cryptonight_cl;
+    return true;
 }
+
+
+} // namespace xmrig

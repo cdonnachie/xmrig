@@ -96,6 +96,12 @@ const char *Algorithm::kKAWPOW          = "kawpow";
 const char *Algorithm::kKAWPOW_RVN      = "kawpow";
 #endif
 
+#ifdef XMRIG_ALGO_MEOWPOW
+const char *Algorithm::kMEOWPOW         = "meowpow";
+const char *Algorithm::kMEOWPOW_MEWC    = "meowpow";
+#endif
+
+
 #ifdef XMRIG_ALGO_GHOSTRIDER
 const char* Algorithm::kGHOSTRIDER      = "ghostrider";
 const char* Algorithm::kGHOSTRIDER_RTM  = "ghostrider";
@@ -158,6 +164,10 @@ static const std::map<uint32_t, const char *> kAlgorithmNames = {
 
 #   ifdef XMRIG_ALGO_KAWPOW
     ALGO_NAME(KAWPOW_RVN),
+#   endif
+
+#   ifdef XMRIG_ALGO_MEOWPOW
+    ALGO_NAME(MEOWPOW_MEWC),
 #   endif
 
 #   ifdef XMRIG_ALGO_GHOSTRIDER
@@ -275,6 +285,10 @@ static const std::map<const char *, Algorithm::Id, aliasCompare> kAlgorithmAlias
     ALGO_ALIAS_AUTO(KAWPOW_RVN),    ALGO_ALIAS(KAWPOW_RVN,      "kawpow/rvn"),
 #   endif
 
+#   ifdef XMRIG_ALGO_MEOWPOW
+    ALGO_ALIAS_AUTO(MEOWPOW_MEWC),  ALGO_ALIAS(MEOWPOW_MEWC,    "meowpow/mewc"),
+#   endif
+
 #   ifdef XMRIG_ALGO_GHOSTRIDER
     ALGO_ALIAS_AUTO(GHOSTRIDER_RTM), ALGO_ALIAS(GHOSTRIDER_RTM, "ghostrider/rtm"),
                                      ALGO_ALIAS(GHOSTRIDER_RTM, "gr"),
@@ -353,6 +367,7 @@ std::vector<xmrig::Algorithm> xmrig::Algorithm::all(const std::function<bool(con
         RX_0, RX_WOW, RX_ARQ, RX_GRAFT, RX_SFX, RX_KEVA,
         AR2_CHUKWA, AR2_CHUKWA_V2, AR2_WRKZ,
         KAWPOW_RVN,
+        MEOWPOW_MEWC,
         GHOSTRIDER_RTM
     };
 

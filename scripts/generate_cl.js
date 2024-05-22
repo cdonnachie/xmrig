@@ -77,6 +77,15 @@ function kawpow()
     fs.writeFileSync('kawpow_dag_cl.h', text2h(kawpow_dag, 'xmrig', 'kawpow_dag_cl'));
 }
 
+function meowpow()
+{
+    const meowpow = opencl_minify(addIncludes('meowpow.cl', [ 'defs.h' ]));
+    const meowpow_dag = opencl_minify(addIncludes('meowpow_dag.cl', [ 'defs.h' ]));
+
+    // fs.writeFileSync('meowpow_gen.cl', meowpow);
+    fs.writeFileSync('meowpow_cl.h', text2h(meowpow, 'xmrig', 'meowpow_cl'));
+    fs.writeFileSync('meowpow_dag_cl.h', text2h(meowpow_dag, 'xmrig', 'meowpow_dag_cl'));
+}
 
 process.chdir(path.resolve('src/backend/opencl/cl/cn'));
 
@@ -92,3 +101,8 @@ process.chdir(cwd);
 process.chdir(path.resolve('src/backend/opencl/cl/kawpow'));
 
 kawpow();
+
+process.chdir(cwd);
+process.chdir(path.resolve('src/backend/opencl/cl/meowpow'));
+
+meowpow();

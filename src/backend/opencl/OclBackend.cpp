@@ -47,6 +47,12 @@
 #endif
 
 
+#ifdef XMRIG_ALGO_MEOWPOW
+#   include "crypto/meowpow/MPCache.h"
+#   include "crypto/meowpow/MPHash.h"
+#endif
+
+
 #ifdef XMRIG_FEATURE_API
 #   include "base/api/interfaces/IApiRequest.h"
 #endif
@@ -211,6 +217,13 @@ public:
             if (algo.family() == Algorithm::KAWPOW) {
                 const uint32_t epoch = job.height() / KPHash::EPOCH_LENGTH;
                 mem_used = (KPCache::cache_size(epoch) + KPCache::dag_size(epoch)) / oneMiB;
+            }
+#           endif
+
+#           ifdef XMRIG_ALGO_MEOWPOW
+            if (algo.family() == Algorithm::MEOWPOW) {
+                const uint32_t epoch = job.height() / MPHash::EPOCH_LENGTH;
+                mem_used = (KPCache::cache_size(epoch) + MPCache::dag_size(epoch)) / oneMiB;
             }
 #           endif
 

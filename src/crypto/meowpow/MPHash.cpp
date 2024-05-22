@@ -26,8 +26,8 @@
 
 
 #include "backend/cpu/Cpu.h"
-#include "crypto/kawpow/KPHash.h"
-#include "crypto/kawpow/KPCache.h"
+#include "crypto/meowpow/MPHash.h"
+#include "crypto/meowpow/MPCache.h"
 #include "3rdparty/libethash/ethash.h"
 #include "3rdparty/libethash/ethash_internal.h"
 #include "3rdparty/libethash/data_sizes.h"
@@ -39,18 +39,18 @@
 namespace xmrig {
 
 
-static const uint32_t ravencoin_kawpow[15] = {
-        0x00000072, //R
-        0x00000041, //A
-        0x00000056, //V
+static const uint32_t meowcoin_meowpow[15] = {
+        0x0000004D, //M
         0x00000045, //E
-        0x0000004E, //N
+        0x0000004F, //O
+        0x00000057, //W
         0x00000043, //C
         0x0000004F, //O
         0x00000049, //I
         0x0000004E, //N
-        0x0000004B, //K
-        0x00000041, //A
+        0x0000004D, //M
+        0x00000045, //E
+        0x0000004F, //O
         0x00000057, //W
         0x00000050, //P
         0x0000004F, //O
@@ -212,14 +212,14 @@ static inline uint32_t random_math(uint32_t a, uint32_t b, uint32_t selector, bo
 }
 
 
-void KPHash::calculate(const KPCache& light_cache, uint32_t block_height, const uint8_t (&header_hash)[32], uint64_t nonce, uint32_t (&output)[8], uint32_t (&mix_hash)[8])
+void MPHash::calculate(const MPCache& light_cache, uint32_t block_height, const uint8_t (&header_hash)[32], uint64_t nonce, uint32_t (&output)[8], uint32_t (&mix_hash)[8])
 {
     uint32_t keccak_state[25];
     uint32_t mix[LANES][REGS];
 
     memcpy(keccak_state, header_hash, sizeof(header_hash));
     memcpy(keccak_state + 8, &nonce, sizeof(nonce));
-    memcpy(keccak_state + 10, ravencoin_kawpow, sizeof(ravencoin_kawpow));
+    memcpy(keccak_state + 10, meowcoin_meowpow, sizeof(meowcoin_meowpow));
 
     ethash_keccakf800(keccak_state);
 
@@ -238,7 +238,7 @@ void KPHash::calculate(const KPCache& light_cache, uint32_t block_height, const 
         }
     }
 
-    const uint32_t prog_number = block_height / KPHash::PERIOD_LENGTH;
+    const uint32_t prog_number = block_height / MPHash::PERIOD_LENGTH;
 
     uint32_t dst_seq[REGS];
     uint32_t src_seq[REGS];
@@ -261,7 +261,11 @@ void KPHash::calculate(const KPCache& light_cache, uint32_t block_height, const 
     }
 
     const uint32_t epoch = light_cache.epoch();
-    const uint32_t num_items = static_cast<uint32_t>(dag_sizes[epoch] / ETHASH_MIX_BYTES / 2);
+    uint32_t meowpow_epoch = epoch;
+    if (epoch >= MPHash::DAGCHG_EPOCH) {
+        meowpow_epoch = epoch * 4;
+    }
+    const uint32_t num_items = static_cast<uint32_t>(dag_sizes[meowpow_epoch] / ETHASH_MIX_BYTES / 2);
 
     constexpr size_t num_words_per_lane = 256 / (sizeof(uint32_t) * LANES);
     constexpr int max_operations = (CNT_CACHE > CNT_MATH) ? CNT_CACHE : CNT_MATH;
@@ -272,7 +276,7 @@ void KPHash::calculate(const KPCache& light_cache, uint32_t block_height, const 
     cache.block_number = block_height;
 
     cache.num_parent_nodes = cache.cache_size / sizeof(node);
-    KPCache::calculate_fast_mod_data(cache.num_parent_nodes, cache.reciprocal, cache.increment, cache.shift);
+    MPCache::calculate_fast_mod_data(cache.num_parent_nodes, cache.reciprocal, cache.increment, cache.shift);
 
     uint32_t z0 = z;
     uint32_t w0 = w;
@@ -285,7 +289,7 @@ void KPHash::calculate(const KPCache& light_cache, uint32_t block_height, const 
         uint32_t item_index = (mix[r % LANES][0] % num_items) * 4;
 
         node item[4];
-        ethash_calculate_dag_item4_opt(item, item_index, KPCache::num_dataset_parents, &cache);
+        ethash_calculate_dag_item4_opt(item, item_index, MPCache::num_dataset_parents, &cache);
 
         uint32_t dst_counter = 0;
         uint32_t src_counter = 0;
@@ -301,7 +305,7 @@ void KPHash::calculate(const KPCache& light_cache, uint32_t block_height, const 
                 const uint32_t dst = dst_seq[(dst_counter++) % REGS];
                 const uint32_t sel = kiss99(z, w, jsr, jcong);
                 for (uint32_t j = 0; j < LANES; ++j) {
-                    random_merge(mix[j][dst], light_cache.l1_cache()[mix[j][src] % KPCache::l1_cache_num_items], sel);
+                    random_merge(mix[j][dst], light_cache.l1_cache()[mix[j][src] % MPCache::l1_cache_num_items], sel);
                 }
             }
 
@@ -360,7 +364,7 @@ void KPHash::calculate(const KPCache& light_cache, uint32_t block_height, const 
         mix_hash[l % num_words] = fnv1a(mix_hash[l % num_words], lane_hash[l]);
 
     memcpy(keccak_state + 8, mix_hash, sizeof(mix_hash));
-    memcpy(keccak_state + 16, ravencoin_kawpow, sizeof(uint32_t) * 9);
+    memcpy(keccak_state + 16, meowcoin_meowpow, sizeof(uint32_t) * 9);
 
     ethash_keccakf800(keccak_state);
 

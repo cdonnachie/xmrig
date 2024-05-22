@@ -39,6 +39,11 @@
 #endif
 
 
+#ifdef XMRIG_ALGO_MEOWPOW
+#   include "backend/cuda/runners/CudaMeowPowRunner.h"
+#endif
+
+
 #include <cassert>
 #include <thread>
 
@@ -74,6 +79,12 @@ xmrig::CudaWorker::CudaWorker(size_t id, const CudaLaunchData &data) :
     case Algorithm::KAWPOW:
 #       ifdef XMRIG_ALGO_KAWPOW
         m_runner = new CudaKawPowRunner(id, data);
+#       endif
+        break;
+
+    case Algorithm::MEOWPOW:
+#       ifdef XMRIG_ALGO_MEOWPOW
+        m_runner = new CudaMeowPowRunner(id, data);
 #       endif
         break;
 
