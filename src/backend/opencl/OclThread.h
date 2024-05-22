@@ -61,7 +61,7 @@ public:
     }
 #   endif
 
-#   ifdef  defined(XMRIG_ALGO_KAWPOW) || defined(XMRIG_ALGO_MEOWPOW)
+#   if  defined(XMRIG_ALGO_KAWPOW) || defined(XMRIG_ALGO_MEOWPOW)
     OclThread(uint32_t index, uint32_t intensity, uint32_t worksize, uint32_t threads) :
         m_fields(8),
         m_threads(threads, -1),
