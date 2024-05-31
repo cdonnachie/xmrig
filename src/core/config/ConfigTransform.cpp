@@ -109,6 +109,9 @@ void xmrig::ConfigTransform::finalize(rapidjson::Document &doc)
 #       ifdef XMRIG_ALGO_MEOWPOW
         doc[CpuConfig::kField].AddMember(StringRef(Algorithm::kMEOWPOW), false, doc.GetAllocator());
 #       endif
+#       ifdef XMRIG_ALGO_EVRPROGPOW
+        doc[CpuConfig::kField].AddMember(StringRef(Algorithm::kEVRPROGPOW), false, doc.GetAllocator());
+#       endif
 
         doc[CpuConfig::kField].AddMember(StringRef(kAsterisk), profile, doc.GetAllocator());
     }

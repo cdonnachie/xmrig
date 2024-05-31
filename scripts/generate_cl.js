@@ -87,6 +87,16 @@ function meowpow()
     fs.writeFileSync('meowpow_dag_cl.h', text2h(meowpow_dag, 'xmrig', 'meowpow_dag_cl'));
 }
 
+function evrprogpow()
+{
+    const evrprogpow = opencl_minify(addIncludes('evrprogpow.cl', [ 'defs.h' ]));
+    const evrprogpow_dag = opencl_minify(addIncludes('evrprogpow_dag.cl', [ 'defs.h' ]));
+
+    fs.writeFileSync('evrprogpow_cl.h', text2h(evrprogpow, 'xmrig', 'evrprogpow_cl'));
+    fs.writeFileSync('evrprogpow_dag_cl.h', text2h(evrprogpow_dag, 'xmrig', 'evrprogpow_dag_cl'));
+}
+
+
 process.chdir(path.resolve('src/backend/opencl/cl/cn'));
 
 cn();
@@ -106,3 +116,8 @@ process.chdir(cwd);
 process.chdir(path.resolve('src/backend/opencl/cl/meowpow'));
 
 meowpow();
+
+process.chdir(cwd);
+process.chdir(path.resolve('src/backend/opencl/cl/evrprogpow'));
+
+evrprogpow();

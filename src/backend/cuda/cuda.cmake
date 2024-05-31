@@ -64,6 +64,11 @@ if (WITH_CUDA)
        list(APPEND SOURCES_BACKEND_CUDA src/backend/cuda/runners/CudaMeowPowRunner.cpp)
    endif()
 
+    if (WITH_EVRPROGPOW)
+       list(APPEND HEADERS_BACKEND_CUDA src/backend/cuda/runners/CudaEvrProgPowRunner.h)
+       list(APPEND SOURCES_BACKEND_CUDA src/backend/cuda/runners/CudaEvrProgPowRunner.cpp)
+   endif()
+
 else()
     remove_definitions(/DXMRIG_FEATURE_CUDA)
     remove_definitions(/DXMRIG_FEATURE_NVML)

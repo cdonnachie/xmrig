@@ -142,6 +142,20 @@ if (WITH_OPENCL)
              )
     endif()
 
+    if (WITH_EVRPROGPOW)
+    list(APPEND HEADERS_BACKEND_OPENCL
+         src/backend/opencl/kernels/evrprogpow/EvrProgPow_CalculateDAGKernel.h
+         src/backend/opencl/runners/OclEvrProgPowRunner.h
+         src/backend/opencl/runners/tools/OclEvrProgPow.h
+         )
+
+    list(APPEND SOURCES_BACKEND_OPENCL
+         src/backend/opencl/generators/ocl_generic_evrprogpow_generator.cpp
+         src/backend/opencl/kernels/evrprogpow/EvrProgPow_CalculateDAGKernel.cpp
+         src/backend/opencl/runners/OclEvrProgPowRunner.cpp
+         src/backend/opencl/runners/tools/OclEvrProgPow.cpp
+         )
+    endif()
 
     if (WITH_STRICT_CACHE)
         add_definitions(/DXMRIG_STRICT_OPENCL_CACHE)

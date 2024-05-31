@@ -52,6 +52,12 @@
 #endif
 
 
+#ifdef XMRIG_ALGO_EVRPROGPOW
+#   include "crypto/evrprogpow/EPPCache.h"
+#   include "crypto/evrprogpow/EPPHash.h"
+#endif
+
+
 #ifdef XMRIG_FEATURE_API
 #   include "base/api/interfaces/IApiRequest.h"
 #endif
@@ -236,6 +242,13 @@ public:
             if (algo.family() == Algorithm::MEOWPOW) {
                 const uint32_t epoch = job.height() / MPHash::EPOCH_LENGTH;
                 mem_used = (MPCache::dag_size(epoch) + oneMiB - 1) / oneMiB;
+            }
+#           endif
+
+#           ifdef XMRIG_ALGO_EVRPROGPOW
+            if (algo.family() == Algorithm::EVRPROGPOW) {
+                const uint32_t epoch = job.height() / EPPHash::EPOCH_LENGTH;
+                mem_used = (EPPCache::dag_size(epoch) + oneMiB - 1) / oneMiB;
             }
 #           endif
 

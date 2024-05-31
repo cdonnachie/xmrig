@@ -12,6 +12,7 @@ Option `coin` useful for pools without [algorithm negotiation](https://xmrig.com
 
 | Name | Memory | Version | Description | Notes |
 |------|--------|---------|-------------|-------|
+| `evrprogpow` | - | 6.0.0+ | EvrProgPow (Evrmore) | GPU only |
 | `meowpow` | - | 6.0.0+ | MeowPow (Meowcoin) | GPU only |
 | `kawpow` | - | 6.0.0+ | KawPow (Ravencoin) | GPU only |
 | `rx/keva` | 1 MB | 5.9.0+ | RandomKEVA (RandomX variant for Keva). |  |

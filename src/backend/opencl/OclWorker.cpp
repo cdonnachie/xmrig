@@ -43,6 +43,10 @@
 #   include "backend/opencl/runners/OclMeowPowRunner.h"
 #endif
 
+#ifdef XMRIG_ALGO_EVRPROGPOW
+#   include "backend/opencl/runners/OclEvrProgPowRunner.h"
+#endif
+
 #include <cassert>
 #include <thread>
 
@@ -99,6 +103,12 @@ xmrig::OclWorker::OclWorker(size_t id, const OclLaunchData &data) :
     case Algorithm::MEOWPOW:
 #       ifdef XMRIG_ALGO_MEOWPOW
         m_runner = new OclMeowPowRunner(id, data);
+#       endif
+        break;
+
+    case Algorithm::EVRPROGPOW:
+#       ifdef XMRIG_ALGO_EVRPROGPOW
+        m_runner = new OclEvrProgPowRunner(id, data);
 #       endif
         break;
 

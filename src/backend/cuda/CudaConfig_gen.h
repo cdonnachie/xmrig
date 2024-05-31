@@ -153,6 +153,14 @@ size_t inline generate<Algorithm::MEOWPOW>(Threads<CudaThreads> &threads, const 
 #endif
 
 
+#ifdef XMRIG_ALGO_EVRPROGPOW
+template<>
+size_t inline generate<Algorithm::EVRPROGPOW>(Threads<CudaThreads> &threads, const std::vector<CudaDevice> &devices)
+{
+    return generate(Algorithm::kEVRPROGPOW, threads, Algorithm::EVRPROGPOW_EVR, devices);
+}
+#endif
+
 } /* namespace xmrig */
 
 

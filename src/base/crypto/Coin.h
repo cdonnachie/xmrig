@@ -39,6 +39,7 @@ public:
         KEVA,
         RAVEN,
         MEWC,
+        EVR,
         WOWNERO,
         ZEPHYR,
         TOWNFORGE,

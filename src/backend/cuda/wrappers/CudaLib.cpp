@@ -66,6 +66,9 @@ static const char *kKawPowStopHash                      = "kawPowStopHash";
 static const char *kMeowPowHash                         = "meowPowHash";
 static const char *kMeowPowPrepare_v2                   = "meowPowPrepare_v2";
 static const char *kMeowPowStopHash                     = "meowPowStopHash";
+static const char *kEvrProgPowHash                      = "evrProgPowHash";
+static const char *kEvrProgPowPrepare_v2                = "evrProgPowPrepare_v2";
+static const char *kEvrProgPowStopHash                  = "evrProgPowStopHash";
 static const char *kLastError                           = "lastError";
 static const char *kPluginVersion                       = "pluginVersion";
 static const char *kRelease                             = "release";
@@ -93,6 +96,9 @@ using kawPowStopHash_t                                  = bool (*)(nvid_ctx *);
 using meowPowHash_t                                     = bool (*)(nvid_ctx *, uint8_t*, uint64_t, uint32_t *, uint32_t *, uint32_t *);
 using meowPowPrepare_v2_t                               = bool (*)(nvid_ctx *, const void *, size_t, const void *, size_t, uint32_t, const uint64_t*);
 using meowPowStopHash_t                                 = bool (*)(nvid_ctx *);
+using evrProgPowHash_t                                  = bool (*)(nvid_ctx *, uint8_t*, uint64_t, uint32_t *, uint32_t *, uint32_t *);
+using evrProgPowPrepare_v2_t                            = bool (*)(nvid_ctx *, const void *, size_t, const void *, size_t, uint32_t, const uint64_t*);
+using evrProgPowStopHash_t                              = bool (*)(nvid_ctx *);
 using lastError_t                                       = const char * (*)(nvid_ctx *);
 using pluginVersion_t                                   = const char * (*)();
 using release_t                                         = void (*)(nvid_ctx *);
@@ -120,6 +126,9 @@ static kawPowStopHash_t pKawPowStopHash                 = nullptr;
 static meowPowHash_t pMeowPowHash                       = nullptr;
 static meowPowPrepare_v2_t pMeowPowPrepare_v2           = nullptr;
 static meowPowStopHash_t pMeowPowStopHash               = nullptr;
+static evrProgPowHash_t pEvrProgPowHash                 = nullptr;
+static evrProgPowPrepare_v2_t pEvrProgPowPrepare_v2     = nullptr;
+static evrProgPowStopHash_t pEvrProgPowStopHash         = nullptr;
 static lastError_t pLastError                           = nullptr;
 static pluginVersion_t pPluginVersion                   = nullptr;
 static release_t pRelease                               = nullptr;
@@ -248,6 +257,24 @@ bool xmrig::CudaLib::meowPowPrepare(nvid_ctx *ctx, const void* cache, size_t cac
 bool xmrig::CudaLib::meowPowStopHash(nvid_ctx *ctx) noexcept
 {
     return pMeowPowStopHash(ctx);
+}
+
+
+bool xmrig::CudaLib::evrProgPowHash(nvid_ctx *ctx, uint8_t* job_blob, uint64_t target, uint32_t *rescount, uint32_t *resnonce, uint32_t *skipped_hashes) noexcept
+{
+    return pEvrProgPowHash(ctx, job_blob, target, rescount, resnonce, skipped_hashes);
+}
+
+
+bool xmrig::CudaLib::evrProgPowPrepare(nvid_ctx *ctx, const void* cache, size_t cache_size, const void* dag_precalc, size_t dag_size, uint32_t height, const uint64_t* dag_sizes) noexcept
+{
+    return pEvrProgPowPrepare_v2(ctx, cache, cache_size, dag_precalc, dag_size, height, dag_sizes);
+}
+
+
+bool xmrig::CudaLib::evrProgPowStopHash(nvid_ctx *ctx) noexcept
+{
+    return pEvrProgPowStopHash(ctx);
 }
 
 
@@ -421,6 +448,9 @@ void xmrig::CudaLib::load()
     DLSYM(MeowPowHash);
     DLSYM(MeowPowPrepare_v2);
     DLSYM(MeowPowStopHash);
+    DLSYM(EvrProgPowHash);
+    DLSYM(EvrProgPowPrepare_v2);
+    DLSYM(EvrProgPowStopHash);
 
     if (api == 4U) {
         DLSYM(DeviceInfo);
