@@ -52,6 +52,16 @@
 #   include "crypto/meowpow/MPHash.h"
 #endif
 
+#ifdef XMRIG_ALGO_EVRPROGPOW
+#   include "crypto/evrprogpow/EPPCache.h"
+#   include "crypto/evrprogpow/EPPHash.h"
+#endif
+
+#ifdef XMRIG_ALGO_MERAKI
+#   include "crypto/meraki/MKCache.h"
+#   include "crypto/meraki/MKHash.h"
+#endif
+
 
 #ifdef XMRIG_FEATURE_API
 #   include "base/api/interfaces/IApiRequest.h"
@@ -223,7 +233,21 @@ public:
 #           ifdef XMRIG_ALGO_MEOWPOW
             if (algo.family() == Algorithm::MEOWPOW) {
                 const uint32_t epoch = job.height() / MPHash::EPOCH_LENGTH;
-                mem_used = (KPCache::cache_size(epoch) + MPCache::dag_size(epoch)) / oneMiB;
+                mem_used = (MPCache::cache_size(epoch) + MPCache::dag_size(epoch)) / oneMiB;
+            }
+#           endif
+
+#           ifdef XMRIG_ALGO_EVRPROGPOW
+            if (algo.family() == Algorithm::EVRPROGPOW) {
+                const uint32_t epoch = job.height() / EPPHash::EPOCH_LENGTH;
+                mem_used = (EPPCache::cache_size(epoch) + EPPCache::dag_size(epoch)) / oneMiB;
+            }
+#           endif
+
+#           ifdef XMRIG_ALGO_MERAKI
+            if (algo.family() == Algorithm::MERAKI) {
+                const uint32_t epoch = job.height() / MKHash::EPOCH_LENGTH;
+                mem_used = (MKCache::cache_size(epoch) + MKCache::dag_size(epoch)) / oneMiB;
             }
 #           endif
 

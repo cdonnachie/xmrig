@@ -177,6 +177,7 @@ void xmrig::CudaConfig::generate()
     count += xmrig::generate<Algorithm::KAWPOW>(m_threads, devices);
     count += xmrig::generate<Algorithm::MEOWPOW>(m_threads, devices);
     count += xmrig::generate<Algorithm::EVRPROGPOW>(m_threads, devices);
+    count += xmrig::generate<Algorithm::MERAKI>(m_threads, devices);
 
     generated    = true;
     m_shouldSave = count > 0;

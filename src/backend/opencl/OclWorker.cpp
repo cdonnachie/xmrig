@@ -47,6 +47,10 @@
 #   include "backend/opencl/runners/OclEvrProgPowRunner.h"
 #endif
 
+#ifdef XMRIG_ALGO_MERAKI
+#   include "backend/opencl/runners/OclMerakiRunner.h"
+#endif
+
 #include <cassert>
 #include <thread>
 
@@ -109,6 +113,12 @@ xmrig::OclWorker::OclWorker(size_t id, const OclLaunchData &data) :
     case Algorithm::EVRPROGPOW:
 #       ifdef XMRIG_ALGO_EVRPROGPOW
         m_runner = new OclEvrProgPowRunner(id, data);
+#       endif
+        break;
+
+    case Algorithm::MERAKI:
+#       ifdef XMRIG_ALGO_MERAKI
+        m_runner = new OclMerakiRunner(id, data);
 #       endif
         break;
 

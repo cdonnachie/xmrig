@@ -157,6 +157,21 @@ if (WITH_OPENCL)
          )
     endif()
 
+    if (WITH_MERAKI)
+        list(APPEND HEADERS_BACKEND_OPENCL
+             src/backend/opencl/kernels/meraki/Meraki_CalculateDAGKernel.h
+             src/backend/opencl/runners/OclMerakiRunner.h
+             src/backend/opencl/runners/tools/OclMeraki.h
+             )
+
+        list(APPEND SOURCES_BACKEND_OPENCL
+             src/backend/opencl/generators/ocl_generic_meraki_generator.cpp
+             src/backend/opencl/kernels/meraki/Meraki_CalculateDAGKernel.cpp
+             src/backend/opencl/runners/OclMerakiRunner.cpp
+             src/backend/opencl/runners/tools/OclMeraki.cpp
+             )
+    endif()
+
     if (WITH_STRICT_CACHE)
         add_definitions(/DXMRIG_STRICT_OPENCL_CACHE)
     else()

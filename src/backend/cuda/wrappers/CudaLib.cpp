@@ -69,6 +69,9 @@ static const char *kMeowPowStopHash                     = "meowPowStopHash";
 static const char *kEvrProgPowHash                      = "evrProgPowHash";
 static const char *kEvrProgPowPrepare_v2                = "evrProgPowPrepare_v2";
 static const char *kEvrProgPowStopHash                  = "evrProgPowStopHash";
+static const char *kMerakiHash                          = "merakiHash";
+static const char *kMerakiPrepare_v2                    = "merakiPrepare_v2";
+static const char *kMerakiStopHash                      = "merakiStopHash";
 static const char *kLastError                           = "lastError";
 static const char *kPluginVersion                       = "pluginVersion";
 static const char *kRelease                             = "release";
@@ -99,6 +102,9 @@ using meowPowStopHash_t                                 = bool (*)(nvid_ctx *);
 using evrProgPowHash_t                                  = bool (*)(nvid_ctx *, uint8_t*, uint64_t, uint32_t *, uint32_t *, uint32_t *);
 using evrProgPowPrepare_v2_t                            = bool (*)(nvid_ctx *, const void *, size_t, const void *, size_t, uint32_t, const uint64_t*);
 using evrProgPowStopHash_t                              = bool (*)(nvid_ctx *);
+using merakiHash_t                                      = bool (*)(nvid_ctx *, uint8_t*, uint64_t, uint32_t *, uint32_t *, uint32_t *);
+using merakiPrepare_v2_t                                = bool (*)(nvid_ctx *, const void *, size_t, const void *, size_t, uint32_t, const uint64_t*);
+using merakiStopHash_t                                  = bool (*)(nvid_ctx *);
 using lastError_t                                       = const char * (*)(nvid_ctx *);
 using pluginVersion_t                                   = const char * (*)();
 using release_t                                         = void (*)(nvid_ctx *);
@@ -129,6 +135,9 @@ static meowPowStopHash_t pMeowPowStopHash               = nullptr;
 static evrProgPowHash_t pEvrProgPowHash                 = nullptr;
 static evrProgPowPrepare_v2_t pEvrProgPowPrepare_v2     = nullptr;
 static evrProgPowStopHash_t pEvrProgPowStopHash         = nullptr;
+static merakiHash_t pMerakiHash                         = nullptr;
+static merakiPrepare_v2_t pMerakiPrepare_v2             = nullptr;
+static merakiStopHash_t pMerakiStopHash                 = nullptr;
 static lastError_t pLastError                           = nullptr;
 static pluginVersion_t pPluginVersion                   = nullptr;
 static release_t pRelease                               = nullptr;
@@ -275,6 +284,24 @@ bool xmrig::CudaLib::evrProgPowPrepare(nvid_ctx *ctx, const void* cache, size_t 
 bool xmrig::CudaLib::evrProgPowStopHash(nvid_ctx *ctx) noexcept
 {
     return pEvrProgPowStopHash(ctx);
+}
+
+
+bool xmrig::CudaLib::merakiHash(nvid_ctx *ctx, uint8_t* job_blob, uint64_t target, uint32_t *rescount, uint32_t *resnonce, uint32_t *skipped_hashes) noexcept
+{
+    return pMerakiHash(ctx, job_blob, target, rescount, resnonce, skipped_hashes);
+}
+
+
+bool xmrig::CudaLib::merakiPrepare(nvid_ctx *ctx, const void* cache, size_t cache_size, const void* dag_precalc, size_t dag_size, uint32_t height, const uint64_t* dag_sizes) noexcept
+{
+    return pMerakiPrepare_v2(ctx, cache, cache_size, dag_precalc, dag_size, height, dag_sizes);
+}
+
+
+bool xmrig::CudaLib::merakiStopHash(nvid_ctx *ctx) noexcept
+{
+    return pMerakiStopHash(ctx);
 }
 
 
@@ -451,6 +478,9 @@ void xmrig::CudaLib::load()
     DLSYM(EvrProgPowHash);
     DLSYM(EvrProgPowPrepare_v2);
     DLSYM(EvrProgPowStopHash);
+    DLSYM(MerakiHash);
+    DLSYM(MerakiPrepare_v2);
+    DLSYM(MerakiStopHash);
 
     if (api == 4U) {
         DLSYM(DeviceInfo);

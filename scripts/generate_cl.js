@@ -96,6 +96,15 @@ function evrprogpow()
     fs.writeFileSync('evrprogpow_dag_cl.h', text2h(evrprogpow_dag, 'xmrig', 'evrprogpow_dag_cl'));
 }
 
+function meraki()
+{
+    const meraki = opencl_minify(addIncludes('meraki.cl', [ 'defs.h' ]));
+    const meraki_dag = opencl_minify(addIncludes('meraki_dag.cl', [ 'defs.h' ]));
+
+    fs.writeFileSync('meraki_cl.h', text2h(meraki, 'xmrig', 'meraki_cl'));
+    fs.writeFileSync('meraki_dag_cl.h', text2h(meraki_dag, 'xmrig', 'meraki_dag_cl'));
+}
+
 
 process.chdir(path.resolve('src/backend/opencl/cl/cn'));
 
@@ -121,3 +130,8 @@ process.chdir(cwd);
 process.chdir(path.resolve('src/backend/opencl/cl/evrprogpow'));
 
 evrprogpow();
+
+process.chdir(cwd);
+process.chdir(path.resolve('src/backend/opencl/cl/meraki'));
+
+meraki();

@@ -49,6 +49,11 @@
 #endif
 
 
+#ifdef XMRIG_ALGO_MERAKI
+#   include "backend/cuda/runners/CudaMerakiRunner.h"
+#endif
+
+
 #include <cassert>
 #include <thread>
 
@@ -96,6 +101,12 @@ xmrig::CudaWorker::CudaWorker(size_t id, const CudaLaunchData &data) :
     case Algorithm::EVRPROGPOW:
 #       ifdef XMRIG_ALGO_EVRPROGPOW
         m_runner = new CudaEvrProgPowRunner(id, data);
+#       endif
+        break;
+
+    case Algorithm::MERAKI:
+#       ifdef XMRIG_ALGO_MERAKI
+        m_runner = new CudaMerakiRunner(id, data);
 #       endif
         break;
 

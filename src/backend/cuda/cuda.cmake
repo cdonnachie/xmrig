@@ -69,6 +69,11 @@ if (WITH_CUDA)
        list(APPEND SOURCES_BACKEND_CUDA src/backend/cuda/runners/CudaEvrProgPowRunner.cpp)
    endif()
 
+    if (WITH_MERAKI)
+       list(APPEND HEADERS_BACKEND_CUDA src/backend/cuda/runners/CudaMerakiRunner.h)
+       list(APPEND SOURCES_BACKEND_CUDA src/backend/cuda/runners/CudaMerakiRunner.cpp)
+    endif()
+   
 else()
     remove_definitions(/DXMRIG_FEATURE_CUDA)
     remove_definitions(/DXMRIG_FEATURE_NVML)

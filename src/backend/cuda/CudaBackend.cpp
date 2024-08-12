@@ -57,6 +57,10 @@
 #   include "crypto/evrprogpow/EPPHash.h"
 #endif
 
+#ifdef XMRIG_ALGO_MERAKI
+#   include "crypto/meraki/MKCache.h"
+#   include "crypto/meraki/MKHash.h"
+#endif
 
 #ifdef XMRIG_FEATURE_API
 #   include "base/api/interfaces/IApiRequest.h"
@@ -249,6 +253,13 @@ public:
             if (algo.family() == Algorithm::EVRPROGPOW) {
                 const uint32_t epoch = job.height() / EPPHash::EPOCH_LENGTH;
                 mem_used = (EPPCache::dag_size(epoch) + oneMiB - 1) / oneMiB;
+            }
+#           endif
+
+#           ifdef XMRIG_ALGO_MERAKI
+            if (algo.family() == Algorithm::MERAKI) {
+                const uint32_t epoch = job.height() / MKHash::EPOCH_LENGTH;
+                mem_used = (MKCache::dag_size(epoch) + oneMiB - 1) / oneMiB;
             }
 #           endif
 

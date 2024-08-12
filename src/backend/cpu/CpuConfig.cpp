@@ -98,7 +98,7 @@ size_t xmrig::CpuConfig::memPoolSize() const
 
 std::vector<xmrig::CpuLaunchData> xmrig::CpuConfig::get(const Miner *miner, const Algorithm &algorithm) const
 {
-    if (algorithm.family() == Algorithm::KAWPOW || algorithm.family() == Algorithm::MEOWPOW || algorithm.family() == Algorithm::EVRPROGPOW) {
+    if (algorithm.family() == Algorithm::KAWPOW || algorithm.family() == Algorithm::MEOWPOW || algorithm.family() == Algorithm::EVRPROGPOW || algorithm.family() == Algorithm::MERAKI) {
         return {};
     }
 

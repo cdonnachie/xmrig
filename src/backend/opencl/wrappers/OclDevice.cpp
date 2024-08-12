@@ -59,6 +59,10 @@ extern bool ocl_generic_meowpow_generator(const OclDevice& device, const Algorit
 extern bool ocl_generic_evrprogpow_generator(const OclDevice& device, const Algorithm& algorithm, OclThreads& threads);
 #endif
 
+#ifdef XMRIG_ALGO_MERAKI
+extern bool ocl_generic_meraki_generator(const OclDevice& device, const Algorithm& algorithm, OclThreads& threads);
+#endif
+
 extern bool ocl_vega_cn_generator(const OclDevice &device, const Algorithm &algorithm, OclThreads &threads);
 extern bool ocl_generic_cn_generator(const OclDevice &device, const Algorithm &algorithm, OclThreads &threads);
 
@@ -75,6 +79,9 @@ static ocl_gen_config_fun generators[] = {
 #   endif
 #   ifdef XMRIG_ALGO_EVRPROGPOW
     ocl_generic_evrprogpow_generator,
+#   endif
+#   ifdef XMRIG_ALGO_MERAKI
+    ocl_generic_meraki_generator,
 #   endif
     ocl_vega_cn_generator,
     ocl_generic_cn_generator

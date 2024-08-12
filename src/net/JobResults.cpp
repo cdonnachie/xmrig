@@ -58,6 +58,12 @@
 #endif
 
 
+#ifdef XMRIG_ALGO_MERAKI
+#   include "crypto/meraki/MKCache.h"
+#   include "crypto/meraki/MKHash.h"
+#endif
+
+
 #if defined(XMRIG_FEATURE_OPENCL) || defined(XMRIG_FEATURE_CUDA)
 #   include "base/tools/Baton.h"
 #   include "crypto/cn/CnCtx.h"
@@ -250,6 +256,39 @@ static void getResults(JobBundle &bundle, std::vector<JobResult> &results, uint3
             }
             else {
                 LOG_ERR("%s " RED_S "GPU #%u COMPUTE ERROR, Check your OC settings", backend_tag(bundle.job.backend()), bundle.device_index);
+                ++errors;
+            }
+        }
+#       endif
+    }
+    else if (algorithm.family() == Algorithm::MERAKI) {
+#       ifdef XMRIG_ALGO_MERAKI
+        for (uint32_t nonce : bundle.nonces) {
+            *bundle.job.nonce() = nonce;
+
+            uint8_t header_hash[32];
+            uint64_t full_nonce;
+            memcpy(header_hash, bundle.job.blob(), sizeof(header_hash));
+            memcpy(&full_nonce, bundle.job.blob() + sizeof(header_hash), sizeof(full_nonce));
+
+            uint32_t output[8];
+            uint32_t mix_hash[8];
+            {
+                std::lock_guard<std::mutex> lock(MKCache::s_cacheMutex);
+
+                MKCache::s_cache.init(bundle.job.height() / MKHash::EPOCH_LENGTH);
+                MKHash::calculate(MKCache::s_cache, bundle.job.height(), header_hash, full_nonce, output, mix_hash);
+            }
+
+            for (size_t i = 0; i < sizeof(hash); ++i) {
+                hash[i] = ((uint8_t*)output)[sizeof(hash) - 1 - i];
+            }
+
+            if (*reinterpret_cast<uint64_t*>(hash + 24) < bundle.job.target()) {
+                results.emplace_back(bundle.job, full_nonce, (uint8_t*)output, bundle.job.blob(), (uint8_t*)mix_hash);
+            }
+            else {
+                LOG_ERR("%s " RED_S "GPU #%u MERAKI COMPUTE ERROR, Check your OC settings", backend_tag(bundle.job.backend()), bundle.device_index);
                 ++errors;
             }
         }

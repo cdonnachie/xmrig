@@ -49,6 +49,11 @@
 #   include "backend/opencl/cl/evrprogpow/evrprogpow_dag_cl.h"
 #endif
 
+#ifdef XMRIG_ALGO_MERAKI
+#   include "backend/opencl/cl/meraki/meraki_cl.h"
+#   include "backend/opencl/cl/meraki/meraki_dag_cl.h"
+#endif
+
 const char *xmrig::OclSource::get(const Algorithm &algorithm)
 {
 #   ifdef XMRIG_ALGO_RANDOMX
@@ -72,6 +77,12 @@ const char *xmrig::OclSource::get(const Algorithm &algorithm)
 #   ifdef XMRIG_ALGO_EVRPROGPOW
     if (algorithm.family() == Algorithm::EVRPROGPOW) {
         return evrprogpow_dag_cl;
+    }
+#   endif
+
+#   ifdef XMRIG_ALGO_MERAKI
+    if (algorithm.family() == Algorithm::MERAKI) {
+        return meraki_dag_cl;
     }
 #   endif
 

@@ -161,6 +161,14 @@ size_t inline generate<Algorithm::EVRPROGPOW>(Threads<CudaThreads> &threads, con
 }
 #endif
 
+#ifdef XMRIG_ALGO_MERAKI
+template<>
+size_t inline generate<Algorithm::MERAKI>(Threads<CudaThreads> &threads, const std::vector<CudaDevice> &devices)
+{
+    return generate(Algorithm::kMERAKI, threads, Algorithm::MERAKI_TLS, devices);
+}
+#endif
+
 } /* namespace xmrig */
 
 

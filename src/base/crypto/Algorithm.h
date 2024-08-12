@@ -83,7 +83,8 @@ public:
         AR2_WRKZ        = 0x61120000,   // "argon2/wrkz"      Argon2id (WRKZ)
         KAWPOW_RVN      = 0x6b0f0000,   // "kawpow/rvn"       KawPow (RVN)
         MEOWPOW_MEWC    = 0x6d0f0000,   // "meowpow/mewc"     MeowPow (MEWC)
-        EVRPROGPOW_EVR  = 0x6e0f0000    // "evrprogpow/evr"   EvrProgPow (EVR)
+        EVRPROGPOW_EVR  = 0x6e0f0000,   // "evrprogpow/evr"   EvrProgPow (EVR)
+        MERAKI_TLS      = 0x6f0f0000    // "meraki/tls"       Meraki (TLS)
     };
 
     enum Family : uint32_t {
@@ -99,7 +100,8 @@ public:
         KAWPOW          = 0x6b000000,
         GHOSTRIDER      = 0x6c000000,
         MEOWPOW         = 0x6d000000,
-        EVRPROGPOW      = 0x6e000000
+        EVRPROGPOW      = 0x6e000000,
+        MERAKI          = 0x6f000000
     };
 
     static const char *kINVALID;
@@ -172,6 +174,10 @@ public:
     static const char *kEVRPROGPOW_EVR;
 #   endif
 
+#   ifdef XMRIG_ALGO_MERAKI
+    static const char *kMERAKI;
+    static const char *kMERAKI_TLS;
+#   endif
 
 #   ifdef XMRIG_ALGO_GHOSTRIDER
     static const char* kGHOSTRIDER;

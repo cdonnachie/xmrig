@@ -12,6 +12,7 @@ Option `coin` useful for pools without [algorithm negotiation](https://xmrig.com
 
 | Name | Memory | Version | Description | Notes |
 |------|--------|---------|-------------|-------|
+| `meraki` | - | 6.0.0+ | Meraki (Telestai) | GPU only |
 | `evrprogpow` | - | 6.0.0+ | EvrProgPow (Evrmore) | GPU only |
 | `meowpow` | - | 6.0.0+ | MeowPow (Meowcoin) | GPU only |
 | `kawpow` | - | 6.0.0+ | KawPow (Ravencoin) | GPU only |

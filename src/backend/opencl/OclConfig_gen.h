@@ -146,6 +146,21 @@ size_t inline generate<Algorithm::MEOWPOW>(Threads<OclThreads>& threads, const s
 }
 #endif
 
+#ifdef XMRIG_ALGO_EVRPROGPOW
+template<>
+size_t inline generate<Algorithm::EVRPROGPOW>(Threads<OclThreads>& threads, const std::vector<OclDevice>& devices)
+{
+    return generate(Algorithm::kEVRPROGPOW, threads, Algorithm::EVRPROGPOW_EVR, devices);
+}
+#endif
+
+#ifdef XMRIG_ALGO_MERAKI
+template<>
+size_t inline generate<Algorithm::MERAKI>(Threads<OclThreads>& threads, const std::vector<OclDevice>& devices)
+{
+    return generate(Algorithm::kMERAKI, threads, Algorithm::MERAKI_TLS, devices);
+}
+#endif
 
 static inline std::vector<OclDevice> filterDevices(const std::vector<OclDevice> &devices, const std::vector<uint32_t> &hints)
 {

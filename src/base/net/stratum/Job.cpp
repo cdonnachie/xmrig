@@ -176,6 +176,7 @@ int32_t xmrig::Job::nonceOffset() const
    if (f == Algorithm::KAWPOW)     return 32;
    if (f == Algorithm::MEOWPOW)    return 32;
    if (f == Algorithm::EVRPROGPOW) return 32;
+   if (f == Algorithm::MERAKI)     return 32;
    if (f == Algorithm::GHOSTRIDER) return 76;
    return 39;
 }

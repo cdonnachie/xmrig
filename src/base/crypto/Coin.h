@@ -40,6 +40,7 @@ public:
         RAVEN,
         MEWC,
         EVR,
+        TLS,
         WOWNERO,
         ZEPHYR,
         TOWNFORGE,

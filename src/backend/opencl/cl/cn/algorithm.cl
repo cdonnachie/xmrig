@@ -30,6 +30,7 @@
 #define ALGO_KAWPOW_RVN     0x6b0f0000
 #define ALGO_MEOWPOW_MEWC   0x6d0f0000
 #define ALGO_EVRPROGPOW_EVR 0x6e0f0000
+#define ALGO_MERAKI         0x6f0f0000
 
 #define FAMILY_UNKNOWN      0
 #define FAMILY_CN           0x63150000
@@ -42,3 +43,4 @@
 #define FAMILY_KAWPOW       0x6b000000
 #define FAMILY_MEOWPOW      0x6d000000
 #define FAMILY_EVRPROGPOW   0x6e000000
+#define FAMILY_MERAKI       0x6f000000
